@@ -4,6 +4,7 @@ const dbConfig = {
   PASSWORD: 'vZQ3riCjrZo7QD1gIa2R',
   DB: 'railway',
   DIALECT: 'mysql',
+  PORT: 5994,
 };
 
 export default dbConfig;
