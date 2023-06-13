@@ -26,7 +26,7 @@ const Major = Db.define(
       allowNull: false,
       validate: {
         notEmpty: true,
-        len: [3, 10],
+        len: [3, 50],
       },
     },
   },
