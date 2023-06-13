@@ -8,7 +8,7 @@ export const getSubjects = async (req, res) => {
     if (req.roles === 'admin') {
       console.log('test');
       response = await Subjects.findAll({
-        attributes: ['uuid', 'name'],
+        attributes: ['uuid', 'name', 'category'],
         include: [
           {
             model: Users,
@@ -18,6 +18,7 @@ export const getSubjects = async (req, res) => {
       });
     } else {
       response = await Subjects.findAll({
+        attributes: ['uuid', 'name', 'category'],
         where: {
           userId: req.userId,
         },
@@ -51,7 +52,7 @@ export const getSubjectsById = async (req, res) => {
     if (req.roles === 'admin') {
       console.log('test');
       response = await Subjects.findAll({
-        attributes: ['uuid', 'name'],
+        attributes: ['uuid', 'name', 'category'],
         where: {
           id: subject.id,
         },
@@ -64,7 +65,7 @@ export const getSubjectsById = async (req, res) => {
       });
     } else {
       response = await Subjects.findAll({
-        attributes: ['uuid', 'name'],
+        attributes: ['uuid', 'name', 'category'],
         where: {
           [Op.and]: [{ id: subject.id }, { userId: req.userId }],
         },
@@ -83,10 +84,11 @@ export const getSubjectsById = async (req, res) => {
 };
 
 export const createSubjects = async (req, res) => {
-  const { name } = req.body;
+  const { name, category } = req.body;
   try {
     await Subjects.create({
       name: name,
+      category: category,
       userId: req.userId,
     });
     res.status(201).json({ msg: 'succesfully add subject' });
@@ -108,12 +110,13 @@ export const updateSubjects = async (req, res) => {
       return res.status(404).json({ msg: 'Subject Not Found' });
     }
 
-    const { name } = req.body;
+    const { name, category } = req.body;
     if (req.roles === 'admin') {
       console.log('test');
       await Subjects.update(
         {
           name: name,
+          category: category,
         },
         {
           where: {
@@ -128,6 +131,7 @@ export const updateSubjects = async (req, res) => {
       await Subjects.update(
         {
           name: name,
+          category: category,
         },
         {
           where: {

@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
-import Majors from '../models/MajorsModel.js';
+import Majors from '../models/MajorModel.js';
 import Users from '../models/UsersModel.js';
 
-export const getMajors = async (req, res) => {
+export const getSubjects = async (req, res) => {
   try {
     let response;
     if (req.roles === 'admin') {
@@ -18,6 +18,7 @@ export const getMajors = async (req, res) => {
       });
     } else {
       response = await Majors.findAll({
+        attributes: ['uuid', 'name', 'category'],
         where: {
           userId: req.userId,
         },
@@ -35,7 +36,7 @@ export const getMajors = async (req, res) => {
   }
 };
 
-export const getMajorsById = async (req, res) => {
+export const getSubjectsById = async (req, res) => {
   try {
     const major = await Majors.findOne({
       where: {
@@ -51,7 +52,7 @@ export const getMajorsById = async (req, res) => {
     if (req.roles === 'admin') {
       console.log('test');
       response = await Majors.findAll({
-        attributes: ['uuid', 'name'],
+        attributes: ['uuid', 'name', 'category'],
         where: {
           id: major.id,
         },
@@ -64,7 +65,7 @@ export const getMajorsById = async (req, res) => {
       });
     } else {
       response = await Majors.findAll({
-        attributes: ['uuid', 'name'],
+        attributes: ['uuid', 'name', 'category'],
         where: {
           [Op.and]: [{ id: major.id }, { userId: req.userId }],
         },
@@ -82,11 +83,12 @@ export const getMajorsById = async (req, res) => {
   }
 };
 
-export const createMajors = async (req, res) => {
-  const { name } = req.body;
+export const createSubjects = async (req, res) => {
+  const { name, category } = req.body;
   try {
     await Majors.create({
       name: name,
+      category: category,
       userId: req.userId,
     });
     res.status(201).json({ msg: 'succesfully add major' });
@@ -96,7 +98,7 @@ export const createMajors = async (req, res) => {
   }
 };
 
-export const updateMajors = async (req, res) => {
+export const updateSubjects = async (req, res) => {
   try {
     const major = await Majors.findOne({
       where: {
@@ -108,12 +110,13 @@ export const updateMajors = async (req, res) => {
       return res.status(404).json({ msg: 'Major Not Found' });
     }
 
-    const { name } = req.body;
+    const { name, category } = req.body;
     if (req.roles === 'admin') {
       console.log('test');
       await Majors.update(
         {
           name: name,
+          category: category,
         },
         {
           where: {
@@ -128,6 +131,7 @@ export const updateMajors = async (req, res) => {
       await Majors.update(
         {
           name: name,
+          category: category,
         },
         {
           where: {
@@ -142,7 +146,7 @@ export const updateMajors = async (req, res) => {
   }
 };
 
-export const deleteMajors = async (req, res) => {
+export const deleteSubjects = async (req, res) => {
   try {
     const major = await Majors.findOne({
       where: {
