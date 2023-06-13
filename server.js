@@ -3,7 +3,7 @@ import cors from 'cors';
 import session from 'express-session';
 import SequelizeStore from 'connect-session-sequelize';
 import SubjectRoutes from './routes/SubjectRoutes.js';
-import MajorRoutes from './routes/SubjectRoutes.js';
+import MajorRoutes from './routes/MajorRoutes.js';
 import UsersRoutes from './routes/UsersRoutes.js';
 import AuthRoutes from './routes/AuthRoutes.js';
 import Api from './routes/api.js';
@@ -58,9 +58,9 @@ app.use(express.json());
 
 app.use(Api);
 app.use(SubjectRoutes);
+app.use(MajorRoutes);
 app.use(UsersRoutes);
 app.use(AuthRoutes);
-app.use(MajorRoutes);
 
 // store.sync()
 

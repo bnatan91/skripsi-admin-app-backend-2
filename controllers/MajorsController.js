@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import Majors from '../models/MajorModel.js';
 import Users from '../models/UsersModel.js';
 
-export const getSubjects = async (req, res) => {
+export const getMajors = async (req, res) => {
   try {
     let response;
     if (req.roles === 'admin') {
@@ -36,7 +36,7 @@ export const getSubjects = async (req, res) => {
   }
 };
 
-export const getSubjectsById = async (req, res) => {
+export const getMajorsById = async (req, res) => {
   try {
     const major = await Majors.findOne({
       where: {
@@ -83,7 +83,7 @@ export const getSubjectsById = async (req, res) => {
   }
 };
 
-export const createSubjects = async (req, res) => {
+export const createMajors = async (req, res) => {
   const { name, category } = req.body;
   try {
     await Majors.create({
@@ -98,7 +98,7 @@ export const createSubjects = async (req, res) => {
   }
 };
 
-export const updateSubjects = async (req, res) => {
+export const updateMajors = async (req, res) => {
   try {
     const major = await Majors.findOne({
       where: {
@@ -146,7 +146,7 @@ export const updateSubjects = async (req, res) => {
   }
 };
 
-export const deleteSubjects = async (req, res) => {
+export const deleteMajors = async (req, res) => {
   try {
     const major = await Majors.findOne({
       where: {

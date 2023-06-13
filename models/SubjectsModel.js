@@ -26,7 +26,20 @@ const Subjects = Db.define(
       allowNull: false,
       defaultValue: 0,
     },
-    checked: {
+    category: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [3, 50],
+      },
+    },
+    checkedT: {
+      type: Sequelize.FLOAT,
+      allowNull: false,
+      defaultValue: 0.5,
+    },
+    checkedS: {
       type: Sequelize.FLOAT,
       allowNull: false,
       defaultValue: 0.5,
