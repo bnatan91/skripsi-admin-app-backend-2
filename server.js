@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import SequelizeStore from 'connect-session-sequelize';
-import SubjectSRoutes from './routes/SubjectRoutes.js';
+import SubjectRoutes from './routes/SubjectRoutes.js';
+import MajorRoutes from './routes/MajorRoutes.js';
 import UsersRoutes from './routes/UsersRoutes.js';
 import AuthRoutes from './routes/AuthRoutes.js';
 import Api from './routes/api.js';
@@ -14,7 +15,7 @@ const app = express();
 
 const sessionStore = SequelizeStore(session.Store);
 
-const corsWhiteList = ['http://localhost:3000', 'http://localhost:3001'];
+const corsWhiteList = [' ', 'http://localhost:3000', 'http://localhost:3001'];
 
 const store = new sessionStore({
   db: Db,
@@ -27,13 +28,16 @@ const store = new sessionStore({
 
 let corsOptions = {
   credentials: true, //access-control-allow-credentials:true
-  origin: (origin, callBack) => {
-    if (corsWhiteList.indexOf(origin) !== -1) {
-      callBack(null, true);
-    } else {
-      callBack(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'Access-Control-Allow-Origin',
+    (origin, callBack) => {
+      if (corsWhiteList.indexOf(origin) !== -1) {
+        callBack(null, true);
+      } else {
+        callBack(new Error('Not allowed by CORS'));
+      }
+    },
+  ],
 };
 
 let sessionOptions = {
@@ -53,7 +57,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use(Api);
-app.use(SubjectSRoutes);
+app.use(SubjectRoutes);
+app.use(MajorRoutes);
 app.use(UsersRoutes);
 app.use(AuthRoutes);
 

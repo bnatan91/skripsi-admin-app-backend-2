@@ -1,13 +1,13 @@
 import { Op } from 'sequelize';
-import Subjects from '../models/SubjectsModel.js';
+import Majors from '../models/MajorModel.js';
 import Users from '../models/UsersModel.js';
 
-export const getSubjects = async (req, res) => {
+export const getMajors = async (req, res) => {
   try {
     let response;
     if (req.roles === 'admin') {
       console.log('test');
-      response = await Subjects.findAll({
+      response = await Majors.findAll({
         attributes: ['uuid', 'name', 'category'],
         include: [
           {
@@ -17,7 +17,7 @@ export const getSubjects = async (req, res) => {
         ],
       });
     } else {
-      response = await Subjects.findAll({
+      response = await Majors.findAll({
         attributes: ['uuid', 'name', 'category'],
         where: {
           userId: req.userId,
@@ -36,25 +36,25 @@ export const getSubjects = async (req, res) => {
   }
 };
 
-export const getSubjectsById = async (req, res) => {
+export const getMajorsById = async (req, res) => {
   try {
-    const subject = await Subjects.findOne({
+    const major = await Majors.findOne({
       where: {
         uuid: req.params.id,
       },
     });
 
-    if (!subject) {
-      return res.status(404).json({ msg: 'Subject Not Found' });
+    if (!major) {
+      return res.status(404).json({ msg: 'Major Not Found' });
     }
 
     let response;
     if (req.roles === 'admin') {
       console.log('test');
-      response = await Subjects.findAll({
+      response = await Majors.findAll({
         attributes: ['uuid', 'name', 'category'],
         where: {
-          id: subject.id,
+          id: major.id,
         },
         include: [
           {
@@ -64,10 +64,10 @@ export const getSubjectsById = async (req, res) => {
         ],
       });
     } else {
-      response = await Subjects.findAll({
+      response = await Majors.findAll({
         attributes: ['uuid', 'name', 'category'],
         where: {
-          [Op.and]: [{ id: subject.id }, { userId: req.userId }],
+          [Op.and]: [{ id: major.id }, { userId: req.userId }],
         },
         include: [
           {
@@ -83,98 +83,98 @@ export const getSubjectsById = async (req, res) => {
   }
 };
 
-export const createSubjects = async (req, res) => {
+export const createMajors = async (req, res) => {
   const { name, category } = req.body;
   try {
-    await Subjects.create({
+    await Majors.create({
       name: name,
       category: category,
       userId: req.userId,
     });
-    res.status(201).json({ msg: 'succesfully add subject' });
+    res.status(201).json({ msg: 'succesfully add major' });
   } catch (error) {
     console.log(error);
     res.status(400).json({ msg: error.message });
   }
 };
 
-export const updateSubjects = async (req, res) => {
+export const updateMajors = async (req, res) => {
   try {
-    const subject = await Subjects.findOne({
+    const major = await Majors.findOne({
       where: {
         uuid: req.params.id,
       },
     });
 
-    if (!subject) {
-      return res.status(404).json({ msg: 'Subject Not Found' });
+    if (!major) {
+      return res.status(404).json({ msg: 'Major Not Found' });
     }
 
     const { name, category } = req.body;
     if (req.roles === 'admin') {
       console.log('test');
-      await Subjects.update(
+      await Majors.update(
         {
           name: name,
           category: category,
         },
         {
           where: {
-            id: subject.id,
+            id: major.id,
           },
         },
       );
     } else {
-      if (req.userId !== subject.userId) {
+      if (req.userId !== major.userId) {
         return res.status(403).json({ msg: 'Access Forbidden' });
       }
-      await Subjects.update(
+      await Majors.update(
         {
           name: name,
           category: category,
         },
         {
           where: {
-            [Op.and]: [{ id: subject.id }, { userId: req.userId }],
+            [Op.and]: [{ id: major.id }, { userId: req.userId }],
           },
         },
       );
     }
-    res.status(200).json({ msg: 'Successfully Update Subject' });
+    res.status(200).json({ msg: 'Successfully Update Major' });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 };
 
-export const deleteSubjects = async (req, res) => {
+export const deleteMajors = async (req, res) => {
   try {
-    const subject = await Subjects.findOne({
+    const major = await Majors.findOne({
       where: {
         uuid: req.params.id,
       },
     });
 
-    if (!subject) {
-      return res.status(404).json({ msg: 'Subject Not Found' });
+    if (!major) {
+      return res.status(404).json({ msg: 'Major Not Found' });
     }
     if (req.roles === 'admin') {
       console.log('test');
-      await Subjects.destroy({
+      await Majors.destroy({
         where: {
-          id: subject.id,
+          id: major.id,
         },
       });
     } else {
-      if (req.userId !== subject.userId) {
+      if (req.userId !== major.userId) {
         return res.status(403).json({ msg: 'Access Forbidden' });
       }
-      await Subjects.destroy({
+      await Majors.destroy({
         where: {
-          [Op.and]: [{ id: subject.id }, { userId: req.userId }],
+          [Op.and]: [{ id: major.id }, { userId: req.userId }],
         },
       });
     }
-    res.status(200).json({ msg: 'Successfully Delete Subject' });
+    res.status(200).json({ msg: 'Successfully Delete Major' });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
