@@ -8,6 +8,7 @@ import AuthRoutes from './routes/AuthRoutes.js';
 import Api from './routes/api.js';
 import dotenv from 'dotenv';
 import Db from './models/index.js';
+import serveFavicon from 'serve-favicon';
 dotenv.config();
 
 const app = express();
@@ -45,6 +46,7 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
+app.use(serveFavicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(Api);
 app.use(SubjectSRoutes);
 app.use(UsersRoutes);
