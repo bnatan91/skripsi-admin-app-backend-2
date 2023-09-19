@@ -8,10 +8,17 @@ import AuthRoutes from './routes/AuthRoutes.js';
 import Api from './routes/api.js';
 import dotenv from 'dotenv';
 import Db from './models/index.js';
-import serveFavicon from 'serve-favicon';
+import favicon from 'express-favicon';
+import path from 'path';
+import { fileURLToPath } from 'url';
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
+
+app.use(favicon(__dirname + '/public/favicon.png'));
 
 const sessionStore = SequelizeStore(session.Store);
 
@@ -46,7 +53,6 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-app.use(serveFavicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(Api);
 app.use(SubjectSRoutes);
 app.use(UsersRoutes);
