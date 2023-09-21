@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import Db from './models/index.js';
 import favicon from 'express-favicon';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
 dotenv.config();
 
@@ -37,17 +38,20 @@ let corsOptions = {
   credentials: true, //access-control-allow-credentials:true
 };
 
+const oneDay = 1000 * 60 * 60 * 24;
+
 let sessionOptions = {
   secret: process.env.SESS_SECRET,
   resave: false,
   saveUninitialized: true,
   store: store,
   cookie: {
-    secure: 'auto',
+    maxAge: oneDay,
   },
 };
 
 app.use(session(sessionOptions));
+app.use(cookieParser());
 
 app.use(cors(corsOptions));
 
