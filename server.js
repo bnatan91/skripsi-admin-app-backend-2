@@ -37,14 +37,14 @@ const store = new sessionStore({
   await Db.sync();
 })();
 
-let corsOptionsDelegate = function (req, callback) {
-  let corsOptions;
-  if (corsWhiteList.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false }; // disable CORS for this request
-  }
-  callback(null, corsOptions); // callback expects two parameters: error and options
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (corsWhiteList.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error());
+    }
+  },
 };
 
 const oneDay = 1000 * 60 * 60 * 24;
@@ -62,7 +62,12 @@ let sessionOptions = {
 app.use(session(sessionOptions));
 app.use(cookieParser());
 
-app.use(cors(corsOptionsDelegate));
+app.use(
+  cors({
+    origin: corsOptions,
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+  }),
+);
 app.options(corsWhiteList, cors());
 app.use(express.json());
 
