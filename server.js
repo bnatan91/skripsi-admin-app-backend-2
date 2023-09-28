@@ -37,19 +37,14 @@ const store = new sessionStore({
   await Db.sync();
 })();
 
-let corsOptions = {
-  origin: function (origin, callback) {
-    // allow requests with no origin
-    // (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (corsWhiteList.indexOf(origin) === -1) {
-      var msg =
-        'The CORS policy for this site does not ' +
-        'allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+let corsOptionsDelegate = function (req, callback) {
+  let corsOptions;
+  if (corsWhiteList.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
 };
 
 const oneDay = 1000 * 60 * 60 * 24;
@@ -67,7 +62,7 @@ let sessionOptions = {
 app.use(session(sessionOptions));
 app.use(cookieParser());
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptionsDelegate));
 app.options('*', cors());
 app.use(express.json());
 
