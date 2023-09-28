@@ -63,7 +63,7 @@ app.use(session(sessionOptions));
 app.use(cookieParser());
 
 app.use(cors(corsOptionsDelegate));
-app.options('*', cors());
+app.options(corsWhiteList, cors());
 app.use(express.json());
 
 app.use(Api);
