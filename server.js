@@ -23,7 +23,7 @@ app.use(favicon(__dirname + '/public/favicon.png'));
 
 const sessionStore = SequelizeStore(session.Store);
 
-const corsWhiteList = ['*', 'http://localhost:3000', 'http://localhost:3001'];
+const corsWhiteList = ['http://localhost:3000', 'http://localhost:3001'];
 
 const store = new sessionStore({
   db: Db,
@@ -39,13 +39,25 @@ let corsOptions = {
     // allow requests with no origin
     // (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (corsWhiteList.indexOf(origin) === -1) {
+    if (allowedOrigins.indexOf(origin) === -1) {
       var msg =
         'The CORS policy for this site does not ' +
         'allow access from the specified Origin.';
       return callback(new Error(msg), false);
     }
     return callback(null, true);
+  },
+};
+
+const oneDay = 1000 * 60 * 60 * 24;
+
+let sessionOptions = {
+  secret: process.env.SESS_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  store: store,
+  cookie: {
+    maxAge: oneDay,
   },
 };
 app.use(cors(corsOptions));
