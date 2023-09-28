@@ -23,7 +23,7 @@ app.use(favicon(__dirname + '/public/favicon.png'));
 
 const sessionStore = SequelizeStore(session.Store);
 
-const corsWhiteList = ['*', 'http://localhost:3000', 'http://localhost:3001'];
+const corsWhiteList = ['http://localhost:3000', 'http://localhost:3001'];
 
 const store = new sessionStore({
   db: Db,
