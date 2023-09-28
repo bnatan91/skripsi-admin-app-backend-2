@@ -63,11 +63,12 @@ let sessionOptions = {
     maxAge: oneDay,
   },
 };
-app.use(cors(corsOptions));
 
 app.use(session(sessionOptions));
 app.use(cookieParser());
 
+app.use(cors(corsOptions));
+app.options('*', cors());
 app.use(express.json());
 
 app.use(Api);
