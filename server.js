@@ -23,7 +23,7 @@ app.use(favicon(__dirname + '/public/favicon.png'));
 
 const sessionStore = SequelizeStore(session.Store);
 
-const corsWhiteList = ['http://localhost:3000', 'http://localhost:3001', '*'];
+const corsWhiteList = ['*', 'http://localhost:3000', 'http://localhost:3001'];
 
 const store = new sessionStore({
   db: Db,
@@ -36,6 +36,16 @@ const store = new sessionStore({
 
 let corsOptions = {
   credentials: true, //access-control-allow-credentials:true
+  origin: [
+    'Access-Control-Allow-Origin',
+    (origin, callBack) => {
+      if (corsWhiteList.indexOf(origin) !== -1) {
+        callBack(null, true);
+      } else {
+        callBack(new Error('Not allowed by CORS'));
+      }
+    },
+  ],
 };
 
 const oneDay = 1000 * 60 * 60 * 24;
