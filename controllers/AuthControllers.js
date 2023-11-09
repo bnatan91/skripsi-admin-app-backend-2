@@ -4,7 +4,7 @@ import argon2 from 'argon2';
 export const Login = async (req, res) => {
   const user = await Users.findOne({
     where: {
-      email: req.body.email,
+      username: req.body.username,
     },
   });
   if (!user) {
@@ -18,10 +18,10 @@ export const Login = async (req, res) => {
 
   const uuid = user.uuid;
   const name = user.name;
-  const email = user.email;
+  const username = user.username;
   const roles = user.roles;
 
-  res.status(200).json({ uuid, name, email, roles });
+  res.status(200).json({ uuid, name, username, roles });
 };
 
 export const Me = async (req, res) => {
@@ -29,7 +29,7 @@ export const Me = async (req, res) => {
     return res.status(401).json({ msg: 'Please Login Again' });
   }
   const user = await Users.findOne({
-    attributes: ['uuid', 'name', 'email', 'roles'],
+    attributes: ['uuid', 'name', 'username', 'roles'],
     where: {
       uuid: req.session.userId,
     },

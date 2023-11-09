@@ -6,13 +6,12 @@ export const getSubjects = async (req, res) => {
   try {
     let response;
     if (req.roles === 'admin') {
-      console.log('test');
       response = await Subjects.findAll({
         attributes: ['uuid', 'name'],
         include: [
           {
             model: Users,
-            attributes: ['name', 'email'],
+            attributes: ['name', 'username'],
           },
         ],
       });
@@ -24,7 +23,7 @@ export const getSubjects = async (req, res) => {
         include: [
           {
             model: Users,
-            attributes: ['name', 'email'],
+            attributes: ['name', 'username'],
           },
         ],
       });
@@ -49,7 +48,6 @@ export const getSubjectsById = async (req, res) => {
 
     let response;
     if (req.roles === 'admin') {
-      console.log('test');
       response = await Subjects.findAll({
         attributes: ['uuid', 'name'],
         where: {
@@ -58,7 +56,7 @@ export const getSubjectsById = async (req, res) => {
         include: [
           {
             model: Users,
-            attributes: ['name', 'email'],
+            attributes: ['name', 'username'],
           },
         ],
       });
@@ -71,7 +69,7 @@ export const getSubjectsById = async (req, res) => {
         include: [
           {
             model: Users,
-            attributes: ['name', 'email'],
+            attributes: ['name', 'username'],
           },
         ],
       });
@@ -83,15 +81,15 @@ export const getSubjectsById = async (req, res) => {
 };
 
 export const createSubjects = async (req, res) => {
-  const { name } = req.body;
+  const { name, category } = req.body;
   try {
     await Subjects.create({
       name: name,
+      category: category,
       userId: req.userId,
     });
-    res.status(201).json({ msg: 'succesfully add subject' });
+    res.status(201).json({ msg: 'successfully add subject' });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ msg: error.message });
   }
 };
@@ -108,12 +106,12 @@ export const updateSubjects = async (req, res) => {
       return res.status(404).json({ msg: 'Subject Not Found' });
     }
 
-    const { name } = req.body;
+    const { name, category } = req.body;
     if (req.roles === 'admin') {
-      console.log('test');
       await Subjects.update(
         {
           name: name,
+          category: category,
         },
         {
           where: {
@@ -128,6 +126,7 @@ export const updateSubjects = async (req, res) => {
       await Subjects.update(
         {
           name: name,
+          category: category,
         },
         {
           where: {
@@ -154,7 +153,6 @@ export const deleteSubjects = async (req, res) => {
       return res.status(404).json({ msg: 'Subject Not Found' });
     }
     if (req.roles === 'admin') {
-      console.log('test');
       await Subjects.destroy({
         where: {
           id: subject.id,

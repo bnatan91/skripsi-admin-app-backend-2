@@ -20,12 +20,13 @@ const Users = Db.define(
         len: [3, 100],
       },
     },
-    email: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         notEmpty: true,
-        isEmail: true,
+        len: [3, 100],
       },
     },
     password: {
@@ -33,6 +34,7 @@ const Users = Db.define(
       allowNull: false,
       validate: {
         notEmpty: true,
+        len: [3, 100],
       },
     },
     roles: {

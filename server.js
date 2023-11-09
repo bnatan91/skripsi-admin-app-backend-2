@@ -1,10 +1,11 @@
 import express from 'express';
-import cors from 'cors';
 import session from 'express-session';
 import SequelizeStore from 'connect-session-sequelize';
 import SubjectSRoutes from './routes/SubjectRoutes.js';
 import UsersRoutes from './routes/UsersRoutes.js';
 import AuthRoutes from './routes/AuthRoutes.js';
+import StudentsRoutes from './routes/StudentsRoutes.js';
+import MajorsRoutes from './routes/MajorsRoutes.js';
 import Api from './routes/api.js';
 import dotenv from 'dotenv';
 import Db from './models/index.js';
@@ -23,29 +24,13 @@ app.use(favicon(__dirname + '/public/favicon.png'));
 
 const sessionStore = SequelizeStore(session.Store);
 
-const corsWhiteList = [
-  'https://shark-app-wcnw9.ondigitalocean.app/',
-  'http://localhost:3001',
-];
-
 const store = new sessionStore({
   db: Db,
 });
 
 (async () => {
-  console.log('test');
   await Db.sync();
 })();
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (corsWhiteList.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error());
-    }
-  },
-};
 
 const oneDay = 1000 * 60 * 60 * 24;
 
@@ -62,17 +47,12 @@ let sessionOptions = {
 app.use(session(sessionOptions));
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: corsOptions,
-    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
-  }),
-);
-app.options(corsWhiteList, cors());
 app.use(express.json());
 
 app.use(Api);
 app.use(SubjectSRoutes);
+app.use(StudentsRoutes);
+app.use(MajorsRoutes);
 app.use(UsersRoutes);
 app.use(AuthRoutes);
 

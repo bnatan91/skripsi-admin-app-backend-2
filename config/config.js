@@ -1,10 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 const dbConfig = {
-  HOST: 'containers-us-west-97.railway.app',
-  USER: 'root',
-  PASSWORD: 'vZQ3riCjrZo7QD1gIa2R',
-  DB: 'railway',
-  DIALECT: 'mysql',
-  PORT: 5994,
+  HOST: process.env.HOST,
+  USER: process.env.USER,
+  PASSWORD: process.env.PASSWORD,
+  DB: process.env.DB,
+  DIALECT: process.env.DIALECT,
+  PORT: process.env.PORT,
 };
 
 export default dbConfig;

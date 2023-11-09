@@ -4,7 +4,7 @@ import Users from '../models/UsersModel.js';
 export const getUsers = async (req, res) => {
   try {
     const response = await Users.findAll({
-      attributes: ['uuid', 'name', 'email', 'roles'],
+      attributes: ['uuid', 'name', 'username', 'roles'],
     });
     res.status(200).json(response);
   } catch (error) {
@@ -13,13 +13,12 @@ export const getUsers = async (req, res) => {
 };
 
 export const getUsersById = async (req, res) => {
-  console.log(req.param);
   try {
     const response = await Users.findOne({
       where: {
         uuid: req.params.id,
       },
-      attributes: ['uuid', 'name', 'email', 'roles'],
+      attributes: ['uuid', 'name', 'username', 'roles'],
     });
     if (!response) {
       return res.status(404).json({ msg: 'User Not Found' });
@@ -31,7 +30,7 @@ export const getUsersById = async (req, res) => {
 };
 
 export const createUsers = async (req, res) => {
-  const { name, email, password, confPassword, roles } = req.body;
+  const { name, username, password, confPassword, roles } = req.body;
   if (password !== confPassword) {
     return res.status(400).json({ msg: 'Password not match Confirm Password' });
   }
@@ -40,13 +39,12 @@ export const createUsers = async (req, res) => {
   try {
     await Users.create({
       name: name,
-      email: email,
+      username: username,
       password: hashPasword,
       roles: roles,
     });
     res.status(201).json({ msg: 'succesfully add user' });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ msg: error.message });
   }
 };
@@ -62,7 +60,7 @@ export const updateUsers = async (req, res) => {
     return res.status(404).json({ msg: 'User Not Found' });
   }
 
-  const { name, email, password, confPassword, roles } = req.body;
+  const { name, username, password, confPassword, roles } = req.body;
   let hashPassword;
   if (password === '' || password === null) {
     hashPassword = user.password;
@@ -78,7 +76,7 @@ export const updateUsers = async (req, res) => {
     await Users.update(
       {
         name: name,
-        email: email,
+        username: username,
         password: hashPassword,
         roles: roles,
       },
