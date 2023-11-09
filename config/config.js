@@ -1,13 +1,6 @@
-import dotenv from 'dotenv';
+import dotenv, { config } from 'dotenv';
 dotenv.config();
 
-const dbConfig = {
-  HOST: 'roundhouse.proxy.rlwy.net',
-  USER: 'root',
-  PASSWORD: '3CF65E5fbF3bCACCFDfc355b3D2FdAdC',
-  DB: 'railway',
-  DIALECT: 'mysql',
-  PORT: 30234,
-};
+const databaseConnection = process.env.DATABASE;
 
-export default dbConfig;
+export default databaseConnection;
