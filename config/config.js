@@ -6,7 +6,7 @@ const dbConfig = {
   USER: process.env.USER,
   PASSWORD: process.env.PASSWORD,
   DB: process.env.DB,
-  DIALECT: process.env.DIALECT,
+  DIALECT: 'mysql',
   PORT: process.env.PORT,
 };
 
