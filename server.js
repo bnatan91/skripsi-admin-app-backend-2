@@ -49,6 +49,13 @@ app.use(cookieParser());
 
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: [process.env.FRONTEND, process.env.API_URL],
+    credentials: true,
+  }),
+);
+
 app.use(Api);
 app.use(SubjectSRoutes);
 app.use(StudentsRoutes);
@@ -58,6 +65,4 @@ app.use(AuthRoutes);
 
 // store.sync()
 
-app.listen(process.env.APP_PORT, () => {
-  console.log('server is running');
-});
+app.listen(process.env.APP_PORT, () => {});
