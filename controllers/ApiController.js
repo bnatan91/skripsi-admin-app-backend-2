@@ -1,4 +1,3 @@
-import isEmpty from 'lodash/isempty.js';
 import Majors from '../models/MajorsModel.js';
 import Students from '../models/StudentsModel.js';
 import Subjects from '../models/SubjectsModel.js';
