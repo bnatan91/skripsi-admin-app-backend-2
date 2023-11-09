@@ -2,12 +2,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const dbConfig = {
-  HOST: process.env.HOST,
-  USER: process.env.USER,
-  PASSWORD: process.env.PASSWORD,
-  DB: process.env.DB,
+  HOST: 'roundhouse.proxy.rlwy.net',
+  USER: 'root',
+  PASSWORD: '3CF65E5fbF3bCACCFDfc355b3D2FdAdC',
+  DB: 'railway',
   DIALECT: 'mysql',
-  PORT: process.env.PORT,
+  PORT: 30234,
 };
 
 export default dbConfig;
