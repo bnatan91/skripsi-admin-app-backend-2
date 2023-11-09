@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import cors from 'cors';
 import SequelizeStore from 'connect-session-sequelize';
 import SubjectSRoutes from './routes/SubjectRoutes.js';
 import UsersRoutes from './routes/UsersRoutes.js';
