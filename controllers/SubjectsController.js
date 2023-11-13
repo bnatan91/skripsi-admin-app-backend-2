@@ -49,7 +49,7 @@ export const getSubjectsById = async (req, res) => {
     let response;
     if (req.roles === 'admin') {
       response = await Subjects.findAll({
-        attributes: ['uuid', 'name'],
+        attributes: ['uuid', 'name', 'category'],
         where: {
           id: subject.id,
         },
@@ -62,7 +62,7 @@ export const getSubjectsById = async (req, res) => {
       });
     } else {
       response = await Subjects.findAll({
-        attributes: ['uuid', 'name'],
+        attributes: ['uuid', 'name', 'category'],
         where: {
           [Op.and]: [{ id: subject.id }, { userId: req.userId }],
         },
@@ -97,6 +97,7 @@ export const createSubjects = async (req, res) => {
 export const updateSubjects = async (req, res) => {
   try {
     const subject = await Subjects.findOne({
+      attributes: ['name', 'category'],
       where: {
         uuid: req.params.id,
       },

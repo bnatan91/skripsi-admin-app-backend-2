@@ -25,6 +25,7 @@ export const Login = async (req, res) => {
 };
 
 export const Me = async (req, res) => {
+  console.log(req.session.userId);
   if (!req.session.userId) {
     return res.status(401).json({ msg: 'Please Login Again' });
   }
