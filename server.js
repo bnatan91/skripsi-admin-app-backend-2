@@ -38,21 +38,22 @@ const oneDay = 1000 * 60 * 60 * 24;
 let sessionOptions = {
   secret: process.env.SESS_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: store,
   cookie: {
     maxAge: oneDay,
   },
 };
 
-app.use(session(sessionOptions));
 app.use(cookieParser());
+app.use(session(sessionOptions));
 
 app.use(express.json());
 
 app.use(
   cors({
     origin: [process.env.FRONTEND, process.env.API_URL],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   }),
 );
