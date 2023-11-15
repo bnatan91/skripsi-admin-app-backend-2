@@ -35,7 +35,7 @@ let sessionOptions = {
   cookie: {
     maxAge: oneDay,
     sameSite: 'lax',
-    secure: true,
+    // secure: true,
   },
 };
 
