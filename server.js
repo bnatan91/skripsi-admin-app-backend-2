@@ -37,7 +37,7 @@ let sessionOptions = {
     sameSite: 'none',
     httpOnly: true,
     secure: true,
-    domain: process.env.FRONTEND,
+    domain: process.env.DOMAIN,
   },
 };
 
