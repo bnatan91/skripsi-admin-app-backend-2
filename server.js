@@ -50,8 +50,24 @@ app.use(session(sessionOptions));
 app.use(
   cors({
     origin: [process.env.FRONTEND, process.env.API_URL],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
+    allowedHeaders: [
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Origin',
+      'Access-Control-Allow-Methods',
+      'Access-Control-Allow-Credential',
+      'Origin',
+      'withCredentials',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'Authorization',
+      'X-HTTP-Method-Override',
+      'Set-Cookie',
+      'Cookie',
+      'Request',
+    ],
   }),
 );
 
