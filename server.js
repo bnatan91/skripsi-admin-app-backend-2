@@ -34,7 +34,7 @@ let sessionOptions = {
   store: store,
   cookie: {
     maxAge: oneDay,
-    sameSite: 'strict',
+    sameSite: 'lax',
   },
 };
 
