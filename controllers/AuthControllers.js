@@ -15,6 +15,7 @@ export const Login = async (req, res) => {
     return res.status(400).json({ msg: 'Wrong Password' });
   }
   req.session.userId = user.uuid;
+  console.log(req.session.userId);
 
   const uuid = user.uuid;
   const name = user.name;

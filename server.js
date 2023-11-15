@@ -10,18 +10,10 @@ import MajorsRoutes from './routes/MajorsRoutes.js';
 import Api from './routes/api.js';
 import dotenv from 'dotenv';
 import Db from './models/index.js';
-import favicon from 'express-favicon';
-import path from 'path';
 import cookieParser from 'cookie-parser';
-import { fileURLToPath } from 'url';
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
-
-app.use(favicon(__dirname + '/public/favicon.png'));
 
 const sessionStore = SequelizeStore(session.Store);
 
@@ -42,13 +34,15 @@ let sessionOptions = {
   store: store,
   cookie: {
     maxAge: oneDay,
+    sameSite: 'strict',
   },
 };
 
-app.use(cookieParser());
-app.use(session(sessionOptions));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(session(sessionOptions));
 
 app.use(
   cors({
