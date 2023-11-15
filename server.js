@@ -33,11 +33,11 @@ let sessionOptions = {
   saveUninitialized: false,
   store: store,
   cookie: {
-    maxAge: oneDay,
     domain: process.env.DOMAIN,
     httpOnly: true,
     secure: true,
     sameSite: 'None',
+    maxAge: oneDay,
   },
 };
 
