@@ -33,10 +33,7 @@ let sessionOptions = {
   saveUninitialized: false,
   store: store,
   cookie: {
-    domain: process.env.DOMAIN,
     httpOnly: true,
-    secure: true,
-    sameSite: 'None',
     maxAge: oneDay,
   },
 };
@@ -52,22 +49,6 @@ app.use(
     origin: [process.env.FRONTEND, process.env.API_URL],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
-    allowedHeaders: [
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Methods',
-      'Access-Control-Allow-Credential',
-      'Origin',
-      'withCredentials',
-      'X-Requested-With',
-      'Content-Type',
-      'Accept',
-      'Authorization',
-      'X-HTTP-Method-Override',
-      'Set-Cookie',
-      'Cookie',
-      'Request',
-    ],
   }),
 );
 
