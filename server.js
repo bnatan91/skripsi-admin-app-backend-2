@@ -34,10 +34,10 @@ let sessionOptions = {
   store: store,
   cookie: {
     maxAge: oneDay,
-    sameSite: 'None',
+    domain: process.env.DOMAIN,
     httpOnly: true,
     secure: true,
-    domain: process.env.DOMAIN,
+    sameSite: 'None',
   },
 };
 
