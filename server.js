@@ -45,7 +45,11 @@ app.use(session(sessionOptions));
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND, process.env.API_URL],
+    origin: [
+      process.env.FRONTEND,
+      process.env.API_URL,
+      process.env.FRONTEND - DOMAIN,
+    ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   }),
