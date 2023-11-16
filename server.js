@@ -33,9 +33,6 @@ let sessionOptions = {
   saveUninitialized: false,
   store: store,
   cookie: {
-    httpOnly: true,
-    sameSite: 'None',
-    secure: true,
     maxAge: oneDay,
   },
 };
