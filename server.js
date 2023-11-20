@@ -49,6 +49,7 @@ app.use(
       process.env.FRONTEND,
       process.env.API_URL,
       process.env.FRONTEND_DOMAIN,
+      process.env.DOMAIN,
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
