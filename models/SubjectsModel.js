@@ -43,8 +43,15 @@ const Subjects = Db.define(
       allowNull: false,
       defaultValue: 0.5,
     },
-    userId: {
-      type: Sequelize.INTEGER,
+    createdBy: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    updatedBy: {
+      type: Sequelize.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -53,8 +60,5 @@ const Subjects = Db.define(
   },
   { freezeTableName: true },
 );
-
-Users.hasMany(Subjects);
-Subjects.belongsTo(Users, { foreignKey: 'userId' });
 
 export default Subjects;

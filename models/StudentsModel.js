@@ -22,8 +22,15 @@ export const Students = Db.define(
         len: [3, 50],
       },
     },
-    userId: {
-      type: Sequelize.INTEGER,
+    createdBy: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    updatedBy: {
+      type: Sequelize.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -32,8 +39,5 @@ export const Students = Db.define(
   },
   { freezeTableName: true },
 );
-
-Users.hasMany(Students);
-Students.belongsTo(Users, { foreignKey: 'userId' });
 
 export default Students;

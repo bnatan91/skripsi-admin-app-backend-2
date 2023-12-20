@@ -56,8 +56,15 @@ const Majors = Db.define(
         notEmpty: true,
       },
     },
-    userId: {
-      type: Sequelize.INTEGER,
+    createdBy: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    updatedBy: {
+      type: Sequelize.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -71,8 +78,5 @@ const Majors = Db.define(
 
 Students.hasMany(Majors);
 Majors.belongsTo(Students, { foreignKey: 'studentId' });
-
-Users.hasMany(Majors);
-Majors.belongsTo(Users, { foreignKey: 'userId' });
 
 export default Majors;

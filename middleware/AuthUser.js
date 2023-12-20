@@ -15,6 +15,7 @@ export const VerifyUser = async (req, res, next) => {
   }
   req.userId = user.id;
   req.roles = user.roles;
+  req.name = user.name;
   next();
 };
 

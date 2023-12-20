@@ -5,29 +5,9 @@ import Users from '../models/UsersModel.js';
 export const getSubjects = async (req, res) => {
   try {
     let response;
-    if (req.roles === 'admin') {
-      response = await Subjects.findAll({
-        attributes: ['uuid', 'name'],
-        include: [
-          {
-            model: Users,
-            attributes: ['name', 'username'],
-          },
-        ],
-      });
-    } else {
-      response = await Subjects.findAll({
-        where: {
-          userId: req.userId,
-        },
-        include: [
-          {
-            model: Users,
-            attributes: ['name', 'username'],
-          },
-        ],
-      });
-    }
+    response = await Subjects.findAll({
+      attributes: ['uuid', 'name', 'createdBy', 'updatedBy'],
+    });
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -36,6 +16,7 @@ export const getSubjects = async (req, res) => {
 
 export const getSubjectsById = async (req, res) => {
   try {
+    console.log(req.params.id);
     const subject = await Subjects.findOne({
       where: {
         uuid: req.params.id,
@@ -48,30 +29,18 @@ export const getSubjectsById = async (req, res) => {
 
     let response;
     if (req.roles === 'admin') {
-      response = await Subjects.findAll({
+      response = await Subjects.findOne({
         attributes: ['uuid', 'name', 'category'],
         where: {
           id: subject.id,
         },
-        include: [
-          {
-            model: Users,
-            attributes: ['name', 'username'],
-          },
-        ],
       });
     } else {
-      response = await Subjects.findAll({
+      response = await Subjects.findOne({
         attributes: ['uuid', 'name', 'category'],
         where: {
-          [Op.and]: [{ id: subject.id }, { userId: req.userId }],
+          [Op.and]: [{ id: subject.id }, { createdBy: req.name }],
         },
-        include: [
-          {
-            model: Users,
-            attributes: ['name', 'username'],
-          },
-        ],
       });
     }
     res.status(200).json(response);
@@ -86,7 +55,8 @@ export const createSubjects = async (req, res) => {
     await Subjects.create({
       name: name,
       category: category,
-      userId: req.userId,
+      createdBy: req.name,
+      updatedBy: req.name,
     });
     res.status(201).json({ msg: 'successfully add subject' });
   } catch (error) {
@@ -97,7 +67,6 @@ export const createSubjects = async (req, res) => {
 export const updateSubjects = async (req, res) => {
   try {
     const subject = await Subjects.findOne({
-      attributes: ['name', 'category'],
       where: {
         uuid: req.params.id,
       },
@@ -113,6 +82,7 @@ export const updateSubjects = async (req, res) => {
         {
           name: name,
           category: category,
+          updatedBy: req.name,
         },
         {
           where: {
@@ -121,17 +91,18 @@ export const updateSubjects = async (req, res) => {
         },
       );
     } else {
-      if (req.userId !== subject.userId) {
+      if (req.name !== subject.createdBy) {
         return res.status(403).json({ msg: 'Access Forbidden' });
       }
       await Subjects.update(
         {
           name: name,
           category: category,
+          updatedBy: req.name,
         },
         {
           where: {
-            [Op.and]: [{ id: subject.id }, { userId: req.userId }],
+            [Op.and]: [{ id: subject.id }, { createdBy: req.name }],
           },
         },
       );
@@ -160,7 +131,7 @@ export const deleteSubjects = async (req, res) => {
         },
       });
     } else {
-      if (req.userId !== subject.userId) {
+      if (req.name !== subject.userId) {
         return res.status(403).json({ msg: 'Access Forbidden' });
       }
       await Subjects.destroy({

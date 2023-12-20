@@ -6,30 +6,9 @@ import Majors from '../models/MajorsModel.js';
 export const getStudents = async (req, res) => {
   try {
     let response;
-    if (req.roles === 'admin') {
-      response = await Students.findAll({
-        attributes: ['uuid', 'studentCode'],
-        include: [
-          {
-            model: Users,
-            attributes: ['name', 'username'],
-          },
-        ],
-      });
-    } else {
-      response = await Students.findAll({
-        where: {
-          userId: req.userId,
-        },
-        include: [
-          {
-            model: Users,
-            attributes: ['name', 'username'],
-          },
-        ],
-      });
-    }
-
+    response = await Students.findAll({
+      attributes: ['uuid', 'studentCode', 'createdBy', 'updatedBy'],
+    });
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -51,7 +30,7 @@ export const getStudentById = async (req, res) => {
     let response;
 
     if (req.roles === 'admin') {
-      response = await Students.findAll({
+      response = await Students.findOne({
         attributes: ['uuid', 'studentCode'],
         where: {
           id: student.id,
@@ -63,10 +42,10 @@ export const getStudentById = async (req, res) => {
         ],
       });
     } else {
-      response = await Students.findAll({
+      response = await Students.findOne({
         attributes: ['uuid', 'studentCode'],
         where: {
-          [Op.and]: [{ id: student.id }, { userId: req.userId }],
+          [Op.and]: [{ id: student.id }, { createdBy: req.name }],
         },
         include: [
           {
@@ -86,10 +65,12 @@ export const createStudents = async (req, res) => {
   try {
     await Students.create({
       studentCode: studentCode,
-      userId: req.userId,
+      createdBy: req.name,
+      updatedBy: req.name,
     });
     res.status(201).json({ msg: 'successfully add student' });
   } catch (error) {
+    console.log(error.message);
     res.status(400).json({ msg: error.message });
   }
 };
@@ -111,6 +92,7 @@ export const updateStudents = async (req, res) => {
       await Students.update(
         {
           studentCode: studentCode,
+          updatedBy: req.name,
         },
         {
           where: {
@@ -119,16 +101,17 @@ export const updateStudents = async (req, res) => {
         },
       );
     } else {
-      if (req.userId !== student.userId) {
+      if (req.name !== student.createdBy) {
         return res.status(403).json({ msg: 'Access Forbidden' });
       }
       await Students.update(
         {
           studentCode: studentCode,
+          updatedBy: req.name,
         },
         {
           where: {
-            [Op.and]: [{ id: student.id }, { userId: req.userId }],
+            [Op.and]: [{ id: student.id }, { createdBy: req.name }],
           },
         },
       );
@@ -150,12 +133,9 @@ export const deleteStudents = async (req, res) => {
     if (!student) {
       return res.status(404).json({ msg: 'Student Not Found' });
     } else {
-      if (req.userId !== student.userId) {
-        return res.status(403).json({ msg: 'Access Forbidden' });
-      }
       await Students.destroy({
         where: {
-          [Op.and]: [{ id: student.id }, { userId: req.userId }],
+          id: student.id,
         },
       });
     }

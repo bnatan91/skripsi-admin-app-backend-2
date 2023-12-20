@@ -79,7 +79,8 @@ export const createMajors = async (req, res) => {
       description: majorDescription,
       extra_note: majorExtraNote,
       studentId: studentId,
-      userId: req.userId,
+      createdBy: req.name,
+      updatedBy: req.name,
     });
     res.status(201).json({ msg: 'Successfully Add Majors' });
   } catch (error) {
@@ -122,7 +123,7 @@ export const updateMajors = async (req, res) => {
         description: majorDescription,
         extra_note: majorExtraNote,
         studentId: studentId,
-        userId: req.userId,
+        updatedBy: req.name,
       },
       {
         where: {
