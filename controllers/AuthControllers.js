@@ -15,7 +15,6 @@ export const Login = async (req, res) => {
     return res.status(400).json({ msg: 'Wrong Password' });
   }
   req.session.userId = user.uuid;
-  console.log(req.session.userId);
 
   const uuid = user.uuid;
   const name = user.name;
@@ -26,7 +25,6 @@ export const Login = async (req, res) => {
 };
 
 export const Me = async (req, res) => {
-  console.log(req.session);
   if (!req.session.userId) {
     return res.status(401).json({ msg: 'Please Login Again' });
   }

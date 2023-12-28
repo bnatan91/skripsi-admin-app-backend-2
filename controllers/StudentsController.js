@@ -70,7 +70,6 @@ export const createStudents = async (req, res) => {
     });
     res.status(201).json({ msg: 'successfully add student' });
   } catch (error) {
-    console.log(error.message);
     res.status(400).json({ msg: error.message });
   }
 };

@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize';
 import Db from './index.js';
 import Students from './StudentsModel.js';
-import Users from './UsersModel.js';
 
 const Majors = Db.define(
   'major',

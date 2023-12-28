@@ -16,7 +16,6 @@ export const getSubjects = async (req, res) => {
 
 export const getSubjectsById = async (req, res) => {
   try {
-    console.log(req.params.id);
     const subject = await Subjects.findOne({
       where: {
         uuid: req.params.id,
