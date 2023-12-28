@@ -11,6 +11,7 @@ import Api from './routes/api.js';
 import dotenv from 'dotenv';
 import Db from './models/index.js';
 import cookieParser from 'cookie-parser';
+import CriteriaRoutes from './routes/CriteriaRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -59,6 +60,7 @@ app.use(
 app.use(Api);
 app.use(SubjectSRoutes);
 app.use(StudentsRoutes);
+app.use(CriteriaRoutes);
 app.use(MajorsRoutes);
 app.use(UsersRoutes);
 app.use(AuthRoutes);
